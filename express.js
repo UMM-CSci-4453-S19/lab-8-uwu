@@ -2,40 +2,39 @@ var express=require('express'),
     mysql=require('mysql'),
     credentials=require('./credentials.json'),
     app = express(),
-    port = process.env.PORT || 1337;
+    port = process.env.PORT || 1337,
+    db = require('./database.js');
 
-credentials.host='ids.morris.umn.edu'; //setup database credentials
-credentials.database = "Waterfall";
 
-var connection = mysql.createConnection(credentials); // setup the connection
-
-connection.connect(function(err){if(err){console.log(error)}});
 
 app.use(express.static(__dirname + '/public'));
-app.get("/buttons",function(req,res){
-    var sql = 'SELECT * FROM Waterfall.till_buttons;';
-    connection.query(sql,(function(res){return function(err,rows,fields){
-        if(err){console.log("We have an error:");
-            console.log(err);}
+app.get("/items",function(req,res){
+    var sql = 'SELECT * FROM MinecraftDB.items;';
+    result = db.query(sql);
+    result.then(function(rows){
+        console.log(rows);
         res.send(rows);
-    }})(res));
+    });
 });
-app.get("/click",function(req,res){
+
+app.post("/delete",function(req,res){
     var id = req.param('id');
-    var sql = 'SELECT * FROM till_buttons;';
-    console.log("Attempting sql ->"+sql+"<-");
+    var sql = 'UPDATE FROM MinecraftDB.items SET amount = amount - 1 WHERE id=' + id + ';';
+    result = db.query(sql);
+    result.then(function(rows){
+        console.log(rows);
+        res.send(rows);
+    });
+});
 
-    connection.query(sql,(function(res){return function(err,rows,fields){
-        if(err) {
-            console.log("We have an insertion error:");
-            console.log(err);
-            res.send(err); // Let the upstream guy know how it went
-
-        } else {
-            console.log(rows);
-            res.send(rows);
-        }
-    }})(res));
+app.post("/click", function(req, res){
+    var id = req.param('id');
+    var sql = 'UPDATE MinecraftDB.items SET amount = amount + 1 WHERE itemID =' + id + ";";
+    result = db.query(sql);
+    result.then(function(rows){
+        console.log(rows);
+        res.send(rows);
+    });
 });
 
 app.listen(port);
