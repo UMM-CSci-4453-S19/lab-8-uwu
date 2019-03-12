@@ -17,9 +17,9 @@ app.get("/items",function(req,res){
     });
 });
 
-app.post("/delete",function(req,res){
+app.get("/delete",function(req,res){
     var id = req.param('id');
-    var sql = 'UPDATE FROM MinecraftDB.items SET amount = amount - 1 WHERE id=' + id + ';';
+    var sql = 'UPDATE MinecraftDB.items SET amount = amount - 1 WHERE itemID=' + id + ';';
     result = db.query(sql);
     result.then(function(rows){
         console.log(rows);
@@ -27,7 +27,7 @@ app.post("/delete",function(req,res){
     });
 });
 
-app.post("/click", function(req, res){
+app.get("/click", function(req, res){
     var id = req.param('id');
     var sql = 'UPDATE MinecraftDB.items SET amount = amount + 1 WHERE itemID =' + id + ";";
     result = db.query(sql);
