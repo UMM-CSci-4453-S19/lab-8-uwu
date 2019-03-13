@@ -19,7 +19,8 @@ app.get("/items",function(req,res){
 
 app.get("/delete",function(req,res){
     var id = req.param('id');
-    var sql = 'UPDATE MinecraftDB.items SET amount = amount - 1 WHERE itemID=' + id + ';';
+    var sql = 'UPDATE MinecraftDB.items SET amount = amount - 1 WHERE itemID=' + id + ' AND amount > 0;';
+    console.log(sql);
     result = db.query(sql);
     result.then(function(rows){
         console.log(rows);
