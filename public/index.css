@@ -1,3 +1,7 @@
+body {
+    background-image: url("https://media.giphy.com/media/KiGMzfSIrNf0s/giphy.gif");
+}
+
 div.itemPriceList{
     position:fixed;
     right:0;
@@ -53,7 +57,7 @@ td.amountCell{
 div.totalRow{
     font-size:20pt;
     font-weight:bold;
-    background-color:#afa;
+    background-color:orangered;
     border:2px solid black;
 }
 .totalValue{
